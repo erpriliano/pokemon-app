@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+
+import Layout from '../src/components/Layout';
+import Header from '../src/components/Header';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Layout>
+            <Header title="Pokemon Catch" />
+            <div className="w-full py-10 h-52 bg-green-300">
+                <p>Yang ini coba dulu</p>
+            </div>
+        </Layout>
+    );
 }
 
 export default App;

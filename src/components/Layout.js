@@ -6,7 +6,7 @@ import BottomNav from '../components/BottomNav';
 const Layout = ({ children }) => {
     return (
         <div className="bg-gray-100 min-h-screen w-full md:w-1/3 mx-auto inset-0 py-20">
-            <Header title="Rupa rupa" />
+            <Header title="Pokemon App" />
             <div className="px-6">{children}</div>
             <BottomNav />
         </div>

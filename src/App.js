@@ -1,15 +1,18 @@
 import React from 'react';
+import { Router } from '@reach/router';
 
 import Layout from '../src/components/Layout';
-import Header from '../src/components/Header';
+
+import Home from '../src/pages/Home';
+import MyPokemon from '../src/pages/MyPokemon';
 
 function App() {
     return (
         <Layout>
-            <Header title="Pokemon Catch" />
-            <div className="w-full py-10 h-52 bg-green-300">
-                <p>Yang ini coba dulu</p>
-            </div>
+            <Router>
+                <Home path="/" />
+                <MyPokemon path="/myPokemon" />
+            </Router>
         </Layout>
     );
 }

@@ -31,7 +31,7 @@ const Home = () => {
     };
 
     const loadMore = () => {
-        console.log(pokemon);
+        // console.log(pokemon);
         fetch(pokemon.next)
             .then((res) => res.json())
             .then((pokeApi) =>

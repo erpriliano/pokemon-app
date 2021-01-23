@@ -18,7 +18,8 @@ const Detail = ({ pokemonName }) => {
         moves: [],
         types: [],
         weight: 0,
-        height: 0
+        height: 0,
+        nickname: ''
     });
     const [openModal, setOpenModal] = useState(false);
 
@@ -31,6 +32,7 @@ const Detail = ({ pokemonName }) => {
             .then((res) => res.json())
             .then((pokeData) => {
                 setPokemonData({
+                    ...pokemonData,
                     name: pokeData.name,
                     imgUrl: pokeData.sprites.front_default,
                     moves: pokeData.moves,
@@ -131,13 +133,31 @@ const Detail = ({ pokemonName }) => {
                             className="py-1 px-2 focus:outline-none border border-gray-300 rounded-md text-sm"
                             type="text"
                             placeholder="Nickname..."
+                            onChange={(e) =>
+                                setPokemonData({
+                                    ...pokemonData,
+                                    nickname: e.target.value
+                                })
+                            }
                         />
                     </div>
 
                     <div className="w-full mt-3 mb-1 flex justify-center">
                         <button
                             className="bg-blue-600 text-white text-sm tracking-wider w-1/3 py-2 rounded-md"
-                            onClick={() => setOpenModal(false)}
+                            onClick={() => {
+                                console.log(pokemonData);
+                                var obj = pokemonData;
+                                var dataLocalStorage = JSON.parse(
+                                    localStorage.getItem('myCatch') || '[]'
+                                );
+                                dataLocalStorage.push(obj);
+                                localStorage.setItem(
+                                    'myCatch',
+                                    JSON.stringify(dataLocalStorage)
+                                );
+                                setOpenModal(false);
+                            }}
                         >
                             Save
                         </button>

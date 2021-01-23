@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 
-const catchProb = () => {
+const catchProb = (setOpenModal) => {
     const probability = Math.random() < 0.5;
     if (probability) {
-        console.log('Catched!');
+        console.log('Caught!');
+        setOpenModal(true);
     } else {
         console.log('Failed miserably');
     }
@@ -18,6 +20,7 @@ const Detail = ({ pokemonName }) => {
         weight: 0,
         height: 0
     });
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         reqPokemonData();
@@ -38,6 +41,19 @@ const Detail = ({ pokemonName }) => {
             })
             .catch((err) => console.log(err));
     };
+
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)'
+        }
+    };
+
+    Modal.setAppElement('#modal');
 
     return (
         <div className="w-full flex flex-col">
@@ -89,12 +105,46 @@ const Detail = ({ pokemonName }) => {
 
             <div className="w-full flex justify-center my-6">
                 <button
-                    onClick={() => catchProb()}
+                    onClick={() => catchProb(setOpenModal)}
                     className="w-1/2 py-2 bg-blue-600 text-white text-lg tracking-wider rounded-md shadow-md"
                 >
                     Catch Me!
                 </button>
             </div>
+
+            {/* Show modal if catch is success */}
+            <Modal
+                isOpen={openModal}
+                style={customStyles}
+                contentLabel="Give nickname"
+            >
+                <div className="w-52">
+                    <h3 className="font-semibold tracking-wider text-center mb-4">
+                        Catched!
+                    </h3>
+
+                    <div className="flex flex-col mb-4">
+                        <label className="text-sm mb-1 font-light">
+                            Give Nickname :
+                        </label>
+                        <input
+                            className="py-1 px-2 focus:outline-none border border-gray-300 rounded-md text-sm"
+                            type="text"
+                            placeholder="Nickname..."
+                        />
+                    </div>
+
+                    <div className="w-full mt-3 mb-1 flex justify-center">
+                        <button
+                            className="bg-blue-600 text-white text-sm tracking-wider w-1/3 py-2 rounded-md"
+                            onClick={() => setOpenModal(false)}
+                        >
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+            {/* End of modal */}
         </div>
     );
 };

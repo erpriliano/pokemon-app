@@ -7,7 +7,7 @@ const catchProb = (setOpenModal) => {
         console.log('Caught!');
         setOpenModal(true);
     } else {
-        console.log('Failed miserably');
+        window.alert('Failed miserably');
     }
 };
 

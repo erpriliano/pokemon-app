@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
-const catchProb = (setOpenModal) => {
+const catchProb = (caught, setOpenModal) => {
     const probability = Math.random() < 0.5;
     if (probability) {
-        console.log('Caught!');
-        setOpenModal(true);
+        setOpenModal({ openModal: true, caught: true });
     } else {
-        window.alert('Failed miserably');
+        setOpenModal({ ...caught, openModal: true });
     }
 };
 
@@ -21,7 +20,7 @@ const Detail = ({ pokemonName }) => {
         height: 0,
         nickname: ''
     });
-    const [openModal, setOpenModal] = useState(false);
+    const [caught, setCaught] = useState({ openModal: false, caught: false });
 
     useEffect(() => {
         reqPokemonData();
@@ -107,64 +106,85 @@ const Detail = ({ pokemonName }) => {
 
             <div className="w-full flex justify-center my-6">
                 <button
-                    onClick={() => catchProb(setOpenModal)}
+                    onClick={() => catchProb(caught, setCaught)}
                     className="w-1/2 py-2 bg-blue-600 text-white text-lg tracking-wider rounded-md shadow-md"
                 >
                     Catch Me!
                 </button>
             </div>
 
-            {/* Show modal if catch is success */}
-            <Modal
-                isOpen={openModal}
-                style={customStyles}
-                contentLabel="Give nickname"
-            >
-                <div className="w-52">
-                    <h3 className="font-semibold tracking-wider text-center mb-4">
-                        Catched!
-                    </h3>
+            {caught.caught ? (
+                <Modal
+                    isOpen={caught.openModal}
+                    style={customStyles}
+                    contentLabel="Give nickname"
+                    onRequestClose={() =>
+                        setCaught({ ...caught, openModal: false })
+                    }
+                >
+                    <div className="w-52">
+                        <h3 className="font-semibold tracking-wider text-center mb-4">
+                            Catched!
+                        </h3>
 
-                    <div className="flex flex-col mb-4">
-                        <label className="text-sm mb-1 font-light">
-                            Give Nickname :
-                        </label>
-                        <input
-                            className="py-1 px-2 focus:outline-none border border-gray-300 rounded-md text-sm"
-                            type="text"
-                            placeholder="Nickname..."
-                            onChange={(e) =>
-                                setPokemonData({
-                                    ...pokemonData,
-                                    nickname: e.target.value
-                                })
-                            }
-                        />
-                    </div>
+                        <div className="flex flex-col mb-4">
+                            <label className="text-sm mb-1 font-light">
+                                Give Nickname :
+                            </label>
+                            <input
+                                className="py-1 px-2 focus:outline-none border border-gray-300 rounded-md text-sm"
+                                type="text"
+                                placeholder="Nickname..."
+                                onChange={(e) =>
+                                    setPokemonData({
+                                        ...pokemonData,
+                                        nickname: e.target.value
+                                    })
+                                }
+                            />
+                        </div>
 
-                    <div className="w-full mt-3 mb-1 flex justify-center">
-                        <button
-                            className="bg-blue-600 text-white text-sm tracking-wider w-1/3 py-2 rounded-md"
-                            onClick={() => {
-                                console.log(pokemonData);
-                                var obj = pokemonData;
-                                var dataLocalStorage = JSON.parse(
-                                    localStorage.getItem('myCatch') || '[]'
-                                );
-                                dataLocalStorage.push(obj);
-                                localStorage.setItem(
-                                    'myCatch',
-                                    JSON.stringify(dataLocalStorage)
-                                );
-                                setOpenModal(false);
-                            }}
-                        >
-                            Save
-                        </button>
+                        <div className="w-full mt-3 mb-1 flex justify-center">
+                            <button
+                                className="bg-blue-600 text-white text-sm tracking-wider w-1/3 py-2 rounded-md"
+                                onClick={() => {
+                                    console.log(pokemonData);
+                                    var obj = pokemonData;
+                                    var dataLocalStorage = JSON.parse(
+                                        localStorage.getItem('myCatch') || '[]'
+                                    );
+                                    dataLocalStorage.push(obj);
+                                    localStorage.setItem(
+                                        'myCatch',
+                                        JSON.stringify(dataLocalStorage)
+                                    );
+                                    setCaught({
+                                        openModal: false,
+                                        caught: false
+                                    });
+                                }}
+                            >
+                                Save
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </Modal>
-            {/* End of modal */}
+                </Modal>
+            ) : (
+                <Modal
+                    isOpen={caught.openModal}
+                    style={customStyles}
+                    contentLabel="Fail to catch"
+                    onRequestClose={() =>
+                        setCaught({ openModal: false, caught: false })
+                    }
+                >
+                    <div className="w-52">
+                        <h3 className="font-semibold tracking-wider text-center mb-4">
+                            Failed to catch!
+                        </h3>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };

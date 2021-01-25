@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
-const catchProb = (caught, setOpenModal) => {
+const catchProb = (caught, setCaught) => {
+    console.log('Di dalam function catch', caught);
     const probability = Math.random() < 0.5;
     if (probability) {
-        setOpenModal({ openModal: true, caught: true });
+        setCaught({ ...caught, openModal: true, caught: true });
     } else {
-        setOpenModal({ ...caught, openModal: true });
+        setCaught({ ...caught, openModal: true });
     }
 };
 
@@ -20,7 +21,11 @@ const Detail = ({ pokemonName }) => {
         height: 0,
         nickname: ''
     });
-    const [caught, setCaught] = useState({ openModal: false, caught: false });
+    const [caught, setCaught] = useState({
+        openModal: false,
+        caught: false,
+        showErrorMessage: false
+    });
 
     useEffect(() => {
         reqPokemonData();
@@ -122,7 +127,7 @@ const Detail = ({ pokemonName }) => {
                         setCaught({ ...caught, openModal: false })
                     }
                 >
-                    <div className="w-52">
+                    <div className="w-64">
                         <h3 className="font-semibold tracking-wider text-center mb-4">
                             Catched!
                         </h3>
@@ -143,25 +148,50 @@ const Detail = ({ pokemonName }) => {
                                 }
                             />
                         </div>
+                        <div
+                            className={`w-full my-1 ${
+                                caught.showErrorMessage ? '' : 'hidden'
+                            }`}
+                        >
+                            <p className="text-xs text-center text-red-500">
+                                Nickname already used for this pokemon. Give
+                                another name.
+                            </p>
+                        </div>
 
                         <div className="w-full mt-3 mb-1 flex justify-center">
                             <button
                                 className="bg-blue-600 text-white text-sm tracking-wider w-1/3 py-2 rounded-md"
                                 onClick={() => {
-                                    console.log(pokemonData);
                                     var obj = pokemonData;
                                     var dataLocalStorage = JSON.parse(
                                         localStorage.getItem('myCatch') || '[]'
                                     );
-                                    dataLocalStorage.push(obj);
-                                    localStorage.setItem(
-                                        'myCatch',
-                                        JSON.stringify(dataLocalStorage)
+
+                                    var checkExisting = dataLocalStorage.filter(
+                                        (data) =>
+                                            data.name === obj.name &&
+                                            data.nickname === obj.nickname
                                     );
-                                    setCaught({
-                                        openModal: false,
-                                        caught: false
-                                    });
+
+                                    if (checkExisting.length === 0) {
+                                        dataLocalStorage.push(obj);
+                                        localStorage.setItem(
+                                            'myCatch',
+                                            JSON.stringify(dataLocalStorage)
+                                        );
+                                        setCaught({
+                                            ...caught,
+                                            openModal: false
+                                        });
+                                    } else {
+                                        setCaught({
+                                            ...caught,
+                                            showErrorMessage: true
+                                        });
+                                    }
+
+                                    console.log(checkExisting.length);
                                 }}
                             >
                                 Save
@@ -175,7 +205,11 @@ const Detail = ({ pokemonName }) => {
                     style={customStyles}
                     contentLabel="Fail to catch"
                     onRequestClose={() =>
-                        setCaught({ openModal: false, caught: false })
+                        setCaught({
+                            ...caught,
+                            openModal: false,
+                            caught: false
+                        })
                     }
                 >
                     <div className="w-52">

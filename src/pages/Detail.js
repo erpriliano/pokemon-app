@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
 const catchProb = (caught, setCaught) => {
-    console.log('Di dalam function catch', caught);
     const probability = Math.random() < 0.5;
     if (probability) {
         setCaught({ ...caught, openModal: true, caught: true });
@@ -29,7 +28,7 @@ const Detail = ({ pokemonName }) => {
 
     useEffect(() => {
         reqPokemonData();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const reqPokemonData = () => {
         fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
@@ -190,8 +189,6 @@ const Detail = ({ pokemonName }) => {
                                             showErrorMessage: true
                                         });
                                     }
-
-                                    console.log(checkExisting.length);
                                 }}
                             >
                                 Save

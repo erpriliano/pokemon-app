@@ -13,7 +13,7 @@ const Home = () => {
 
     useEffect(() => {
         ApiCall();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const ApiCall = () => {
         fetch(`https://pokeapi.co/api/v2/pokemon`)
@@ -31,7 +31,6 @@ const Home = () => {
     };
 
     const loadMore = () => {
-        // console.log(pokemon);
         fetch(pokemon.next)
             .then((res) => res.json())
             .then((pokeApi) =>

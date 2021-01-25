@@ -14,7 +14,6 @@ const MyPokemon = () => {
             ) : (
                 <div className="w-full grid grid-cols-2 gap-2">
                     {myCatch.map((data, index) => {
-                        console.log(myCatch);
                         return (
                             <PokemonCard
                                 key={index}

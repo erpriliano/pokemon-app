@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { HashRouter, Route } from 'react-router-dom';
 
 import Layout from '../src/components/Layout';
 
@@ -9,13 +9,18 @@ import Detail from '../src/pages/Detail';
 
 function App() {
     return (
-        <Layout>
-            <Router>
-                <Home path="/" />
-                <MyPokemon path="/myPokemon" />
-                <Detail path="/detail/:pokemonName" />
-            </Router>
-        </Layout>
+        <HashRouter basename="/">
+            <Layout>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/myPokemon" component={MyPokemon} />
+                <Route exact path="/detail/:pokemonName" component={Detail} />
+                {/* <Router>
+                    <Home path="/" />
+                    <MyPokemon path="/myPokemon" />
+                    <Detail path="/detail/:pokemonName" />
+                </Router> */}
+            </Layout>
+        </HashRouter>
     );
 }
 

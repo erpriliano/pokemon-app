@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { useParams } from 'react-router-dom';
 
 const catchProb = (caught, setCaught) => {
     const probability = Math.random() < 0.5;
@@ -10,7 +11,8 @@ const catchProb = (caught, setCaught) => {
     }
 };
 
-const Detail = ({ pokemonName }) => {
+const Detail = () => {
+    let { pokemonName } = useParams();
     const [pokemonData, setPokemonData] = useState({
         name: '',
         imgUrl: '',
@@ -31,6 +33,7 @@ const Detail = ({ pokemonName }) => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const reqPokemonData = () => {
+        console.log(pokemonName);
         fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
             .then((res) => res.json())
             .then((pokeData) => {

@@ -7,7 +7,7 @@ const MyPokemon = () => {
 
     return (
         <div className="w-full h-full">
-            {dataStorage.length === 0 ? (
+            {myCatch === null || myCatch.length === 0 ? (
                 <p className="flex justify-center items-center">
                     You haven't catch any
                 </p>

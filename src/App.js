@@ -12,13 +12,8 @@ function App() {
         <HashRouter basename="/">
             <Layout>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/myPokemon" component={MyPokemon} />
-                <Route exact path="/detail/:pokemonName" component={Detail} />
-                {/* <Router>
-                    <Home path="/" />
-                    <MyPokemon path="/myPokemon" />
-                    <Detail path="/detail/:pokemonName" />
-                </Router> */}
+                <Route path="/myPokemon" component={MyPokemon} />
+                <Route path="/detail/:pokemonName" component={Detail} />
             </Layout>
         </HashRouter>
     );

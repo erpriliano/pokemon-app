@@ -33,7 +33,6 @@ const Detail = () => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const reqPokemonData = () => {
-        console.log(pokemonName);
         fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
             .then((res) => res.json())
             .then((pokeData) => {

@@ -119,13 +119,18 @@ const Detail = () => {
                 </button>
             </div>
 
+            {console.log(caught)}
             {caught.caught ? (
                 <Modal
                     isOpen={caught.openModal}
                     style={customStyles}
                     contentLabel="Give nickname"
                     onRequestClose={() =>
-                        setCaught({ ...caught, openModal: false })
+                        setCaught({
+                            ...caught,
+                            caught: false,
+                            openModal: false
+                        })
                     }
                 >
                     <div className="w-64">
